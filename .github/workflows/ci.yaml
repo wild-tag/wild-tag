@@ -1,0 +1,34 @@
+name: Build and Push Docker Image to GCR
+
+on:
+  push:
+    branches:
+      - deployment
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Log in to GCR
+        uses: docker/login-action@v2
+        with:
+          registry: gcr.io
+          username: _json_key
+          password: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+      - name: Set outputs
+        id: vars
+        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          file: {context}/deployment/docker/server.Dockerfile
+          tags: me-west1-docker.pkg.dev/gcp-etigcp-nprd-12855/wild-tag/server:${{ steps.vars.outputs.sha_short }}
