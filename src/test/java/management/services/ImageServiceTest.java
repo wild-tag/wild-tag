@@ -27,9 +27,10 @@ class ImageServiceTest {
   ImagesRepository imagesRepository = Mockito.mock(ImagesRepository.class);
   UserRepository userRepository = Mockito.mock(UserRepository.class);
   CloudStorageService cloudStorageService = Mockito.mock(CloudStorageService.class);
+  NATSPublisher natsPublisher = Mockito.mock(NATSPublisher.class);
 
 
-  ImageService imageService = new ImageService(cloudStorageService, imagesRepository,  userRepository);
+  ImageService imageService = new ImageService(cloudStorageService, imagesRepository,  userRepository, natsPublisher);
 
   @BeforeEach
   public void setUp() {
