@@ -1450,11 +1450,11 @@ passwordUpdateJob:
   ## @param passwordUpdateJob.previousPasswords.password Previous password (set if the password secret was already changed)
   ## @param passwordUpdateJob.previousPasswords.replicationPassword Previous replication password (set if the password secret was already changed)
   ## @param passwordUpdateJob.previousPasswords.existingSecret Name of a secret containing the previous passwords (set if the password secret was already changed)
-  previousPasswords:
-    postgresPassword: ""
-    password: ""
-    replicationPassword: ""
-    existingSecret: ""
+#  previousPasswords:
+#    postgresPassword: ""
+#    password: ""
+#    replicationPassword: ""
+#    existingSecret: ""
   ## Configure Container Security Context
   ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container
   ## @param passwordUpdateJob.containerSecurityContext.enabled Enabled containers' Security Context
