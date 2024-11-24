@@ -1,6 +1,5 @@
 #!/bin/bash -e
 set -x
-source "${BASH_SOURCE%/*}/bash_pipeline_utils.sh"
 
 NAMESPACE=$1
 SERVER_FULL_IMAGE_NAME=$2
