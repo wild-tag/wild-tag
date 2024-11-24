@@ -10,6 +10,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: pring environment
+        run: |
+          echo "GCP_PROJECT_ID: ${{ env.GCP_PROJECT_ID }}"
+          echo "WILDTAG_CLUSTER: ${{ env.WILDTAG_CLUSTER }}"
+          echo "WILDTAG_CLUSTER_ZONE: ${{ env.WILDTAG_CLUSTER_ZONE }}"
+          echo "WILDTAG_NAMESPACE: ${{ env.WILDTAG_NAMESPACE }}"
+          
       - name: Checkout code
         uses: actions/checkout@v4
 
