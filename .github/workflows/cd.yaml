@@ -55,5 +55,5 @@ jobs:
 
       - name: Upgrade Env
         run:
-          ${GITHUB_WORKSPACE}/deployment/scripts/deploy_env.sh
+          ${GITHUB_WORKSPACE}/deployment/scripts/deploy_env.sh ${{ env.WILDTAG_NAMESPACE }} ${GITHUB_WORKSPACE}/deployment/wild-tag
 
