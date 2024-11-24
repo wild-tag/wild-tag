@@ -5,18 +5,24 @@ on:
     branches:
       - deployment
 
+env:
+  GCP_PROJECT_ID: ${{ env.GCP_PROJECT_ID }}
+  WILDTAG_CLUSTER: ${{ env.WILDTAG_CLUSTER }}
+  WILDTAG_CLUSTER_ZONE: ${{ env.WILDTAG_CLUSTER_ZONE }}
+  WILDTAG_NAMESPACE: ${{ env.WILDTAG_NAMESPACE }}
+
 jobs:
   create-regcred:
     runs-on: ubuntu-latest
 
     steps:
-      - name: pring environment
+      - name: print environment
         run: |
           echo "GCP_PROJECT_ID: ${{ env.GCP_PROJECT_ID }}"
           echo "WILDTAG_CLUSTER: ${{ env.WILDTAG_CLUSTER }}"
           echo "WILDTAG_CLUSTER_ZONE: ${{ env.WILDTAG_CLUSTER_ZONE }}"
           echo "WILDTAG_NAMESPACE: ${{ env.WILDTAG_NAMESPACE }}"
-          
+
       - name: Checkout code
         uses: actions/checkout@v4
 
