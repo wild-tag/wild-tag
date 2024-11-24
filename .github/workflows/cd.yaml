@@ -42,7 +42,11 @@ jobs:
 
       - name: Create Docker registry secret
         run: |
-          if kubectl get secret regcred --namespace=default >/dev/null 2>&1; then kubectl delete secret regcred --namespace=${{ env.WILDTAG_NAMESPACE }} else echo "secret doesn't exists - creating it" fi
+          if kubectl get secret regcred --namespace=default >/dev/null 2>&1; then \
+            kubectl delete secret regcred --namespace=${{ env.WILDTAG_NAMESPACE }} \ 
+          else \
+            echo "secret doesn't exists - creating it" \
+          fi
           kubectl create secret docker-registry regcred \
           --docker-server='me-west1-docker.pkg.dev' \
           --docker-username=_json_key \
