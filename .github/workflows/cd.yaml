@@ -52,3 +52,7 @@ jobs:
           --docker-username=_json_key \
           --docker-password='$(echo ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }} | base64 --decode)'  \
           --namespace=${{ env.WILDTAG_NAMESPACE }}
+
+      - name: Upgrade Env
+        run: helm ls
+

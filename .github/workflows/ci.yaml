@@ -22,13 +22,15 @@ jobs:
           registry: me-west1-docker.pkg.dev
           username: _json_key
           password: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+
       - name: Set outputs
-        id: vars
+        id: gitSha
         run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
           context: .
           push: true
           file: ${{ github.workspace }}/deployment/docker/server.Dockerfile
-          tags: me-west1-docker.pkg.dev/gcp-etigcp-nprd-12855/wild-tag/server:${{ steps.vars.outputs.sha_short }}
+          tags: me-west1-docker.pkg.dev/gcp-etigcp-nprd-12855/wild-tag/server:${{ steps.gitSha.outputs.sha_short }}
