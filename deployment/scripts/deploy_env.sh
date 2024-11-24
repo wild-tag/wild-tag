@@ -2,7 +2,6 @@
 set -x
 
 NAMESPACE=$1
-SERVER_FULL_IMAGE_NAME=$2
 
 
 export DEPLOYS=$(helm ls -n ${NAMESPACE} --all --short --filter ${NAMESPACE}) # check if there's an active deployment
@@ -19,7 +18,7 @@ then
 fi
 
 
-export MAIN_CHART_PATH="$WORKSPACE/deployment/wild-tag/"
+export MAIN_CHART_PATH="${GITHUB_WORKSPACE}/deployment/wild-tag"
 
 echo -e "\e[32m### Installing WildTag HELM chart ###\e[0m"
 
