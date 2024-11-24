@@ -35,7 +35,7 @@ jobs:
 
       - name: Configure kubectl
         run: |
-          gcloud components install gke-gcloud-auth-plugin \
+          gcloud components install gke-gcloud-auth-plugin
           gcloud container clusters get-credentials ${{ env.WILDTAG_CLUSTER }} --zone ${{ env.WILDTAG_CLUSTER_ZONE }} --project ${{ env.GCP_PROJECT_ID }}
 
       - name: Create Docker registry secret
