@@ -34,11 +34,13 @@ jobs:
           project_id: ${{ env.GCP_PROJECT_ID }}
 
       - name: Configure kubectl
-        run: gcloud container clusters get-credentials ${{ env.WILDTAG_CLUSTER }} --zone ${{ env.WILDTAG_CLUSTER_ZONE }} --project ${{ env.GCP_PROJECT_ID }}
+        run: |
+          gcloud components install gke-gcloud-auth-plugin \
+          gcloud container clusters get-credentials ${{ env.WILDTAG_CLUSTER }} --zone ${{ env.WILDTAG_CLUSTER_ZONE }} --project ${{ env.GCP_PROJECT_ID }}
 
       - name: Create Docker registry secret
         run: |
           kubectl -n ${{ env.WILDTAG_NAMESPACE }} create secret docker-registry regcred \
             --docker-server=me-west1-docker.pkg.dev \
             --docker-username=_json_key \
-            --docker-password="$(echo ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }} | base64 --decode)" \
+            --docker-password="$(echo ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }} | base64 --decode)"
