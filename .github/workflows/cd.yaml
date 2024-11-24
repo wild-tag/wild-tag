@@ -42,4 +42,5 @@ jobs:
 
       - name: Create Docker registry secret
         run: |
-          kubectl create secret docker-registry regcred --docker-server="me-west1-docker.pkg.dev" --docker-username=_json_key --docker-password="(echo ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }} | base64 --decode)"
+          export PASS="$(echo ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }} | base64 --decode)"
+          kubectl create secret docker-registry regcred --docker-server="me-west1-docker.pkg.dev" --docker-username=_json_key --docker-password=
