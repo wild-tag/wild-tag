@@ -54,5 +54,6 @@ jobs:
           --namespace=${{ env.WILDTAG_NAMESPACE }}
 
       - name: Upgrade Env
-        run: helm ls
+        run:
+          ${GITHUB_WORKSPACE}/deployment/scripts/deploy_env.sh
 
