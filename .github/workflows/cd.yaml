@@ -33,13 +33,13 @@ jobs:
           credentials_json: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
           project_id: ${{ env.GCP_PROJECT_ID }}
 
-      - name: Configure kubectl
-        run: |
-          sudo apt update
-          sudo apt upgrade
-          sudo apt-get install google-cloud-cli-gke-gcloud-auth-plugin
-          gcloud container clusters get-credentials ${{ env.WILDTAG_CLUSTER }} --zone ${{ env.WILDTAG_CLUSTER_ZONE }} --project ${{ env.GCP_PROJECT_ID }}
-
+      - name: Get Cluster Creds
+        id: 'get-creds'
+        uses: 'google-github-actions/get-gke-credentials@v2'
+        with:
+          cluster_name: ${{ env.WILDTAG_CLUSTER }}
+          location: ${{ env.WILDTAG_CLUSTER_ZONE }}
+          
       - name: Create Docker registry secret
         run: |
           kubectl -n ${{ env.WILDTAG_NAMESPACE }} create secret docker-registry regcred \
