@@ -13,14 +13,11 @@ then
       # if so, kill the active deployment
       helm del -n ${NAMESPACE} ${i};
   done
+  ./deployment/scripts/wait_for_termination.sh ${NAMESPACE}
+  kubectl delete persistentvolumeClaims -n ${NAMESPACE} --all #helm purge doesn't delete claims.
+
 fi
 
-echo '$(ls -l)'
-
-./deployment/scripts/wait_for_termination.sh ${NAMESPACE}
-
-
-kubectl delete persistentvolumeClaims -n ${NAMESPACE} --all #helm purge doesn't delete claims.
 
 export MAIN_CHART_PATH="$WORKSPACE/deployment/wild-tag/"
 

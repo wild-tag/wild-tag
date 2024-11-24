@@ -5,10 +5,10 @@ export NAMESPACE=$1
 
 while true; do
 
-  kubectl get pods --namespace=${NAMESPACE} -l app!=klar-scanner
+  kubectl get pods --namespace=${NAMESPACE}
   kubectl get services --namespace=${NAMESPACE}
 
-	export KUBECTL_PODS_RESULT=$(kubectl get pods --namespace=${NAMESPACE} -l app!=klar-scanner)
+	export KUBECTL_PODS_RESULT=$(kubectl get pods --namespace=${NAMESPACE})
 	export KUBECTL_SVC_RESULT=$(kubectl get services --namespace=${NAMESPACE})
 
 	if [ "$KUBECTL_PODS_RESULT" ] || [ "$KUBECTL_SVC_RESULT" ];
