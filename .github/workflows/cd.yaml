@@ -11,10 +11,10 @@ jobs:
   create-regcred:
     runs-on: ubuntu-latest
     env:
-      GCP_PROJECT_ID: ${{ env.GCP_PROJECT_ID }}
-      WILDTAG_CLUSTER: ${{ env.WILDTAG_CLUSTER }}
-      WILDTAG_CLUSTER_ZONE: ${{ env.WILDTAG_CLUSTER_ZONE }}
-      WILDTAG_NAMESPACE: ${{ env.WILDTAG_NAMESPACE }}
+      GCP_PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
+      WILDTAG_CLUSTER: ${{ vars.WILDTAG_CLUSTER }}
+      WILDTAG_CLUSTER_ZONE: ${{ vars.WILDTAG_CLUSTER_ZONE }}
+      WILDTAG_NAMESPACE: ${{ vars.WILDTAG_NAMESPACE }}
 
     steps:
       - name: print environment
