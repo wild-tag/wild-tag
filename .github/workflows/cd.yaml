@@ -10,7 +10,6 @@ on:
 jobs:
   create-regcred:
     runs-on: ubuntu-latest
-    
     env:
       GCP_PROJECT_ID: ${{ env.GCP_PROJECT_ID }}
       WILDTAG_CLUSTER: ${{ env.WILDTAG_CLUSTER }}
