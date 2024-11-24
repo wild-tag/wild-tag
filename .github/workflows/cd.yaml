@@ -35,7 +35,7 @@ jobs:
 
       - name: Configure kubectl
         run: |
-          apt-get install google-cloud-cli-gke-gcloud-auth-plugin
+          sudo apt-get install google-cloud-cli-gke-gcloud-auth-plugin
           gcloud container clusters get-credentials ${{ env.WILDTAG_CLUSTER }} --zone ${{ env.WILDTAG_CLUSTER_ZONE }} --project ${{ env.GCP_PROJECT_ID }}
 
       - name: Create Docker registry secret
