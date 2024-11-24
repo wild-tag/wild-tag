@@ -42,10 +42,9 @@ jobs:
 
       - name: Create Docker registry secret
         run: |
-          kubectl delete secret regcred --namespace ${{ env.WILDTAG_NAMESPACE }}
-          export PASS='$(echo ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }} | base64 --decode)'
+          if kubectl get secret regcred --namespace=default >/dev/null 2>&1; then kubectl delete secret regcred --namespace=${{ env.WILDTAG_NAMESPACE }}
           kubectl create secret docker-registry regcred \
           --docker-server='me-west1-docker.pkg.dev' \
           --docker-username=_json_key \
-          --docker-password='$PASS'  \
+          --docker-password='$(echo ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }} | base64 --decode)'  \
           --namespace=${{ env.WILDTAG_NAMESPACE }}
