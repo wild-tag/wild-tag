@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: wild-api-server
-          image: me-west1-docker.pkg.dev/gcp-etigcp-nprd-12855/wild-tag/server:1f72f6a
+          image: me-west1-docker.pkg.dev/gcp-etigcp-nprd-12855/wild-tag/server:d39df05
           ports:
             - containerPort: 8080
           command:
