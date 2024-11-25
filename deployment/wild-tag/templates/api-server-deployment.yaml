@@ -51,3 +51,7 @@ spec:
 {{/*              port: 8080*/}}
 {{/*            initialDelaySeconds: 30*/}}
 {{/*            periodSeconds: 10*/}}
+          imagePullPolicy: IfNotPresent
+
+      imagePullSecrets:
+        - name: regcred
