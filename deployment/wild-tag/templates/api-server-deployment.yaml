@@ -19,6 +19,16 @@ spec:
           image: me-west1-docker.pkg.dev/gcp-etigcp-nprd-12855/wild-tag/server:1f72f6a
           ports:
             - containerPort: 8080
+          command:
+          - "java"
+          - "-Xmx512m"
+          - "--add-opens"
+          - "java.base/java.util=ALL-UNNAMED"
+          - "--add-opens"
+          - "java.base/java.lang=ALL-UNNAMED"
+          - "-cp"
+          - "./target/wild-tag-latest.jar:./target/dependency/*"
+          - "portshift.applications.Application"
           envFrom:
             - configMapRef:
                 name: db-config-map
