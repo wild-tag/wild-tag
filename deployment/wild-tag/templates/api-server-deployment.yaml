@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wild-api-server
+  labels:
+    app: wild-api-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wild-api-server
+  template:
+    metadata:
+      labels:
+        app: wild-api-server
+    spec:
+      containers:
+        - name: wild-api-server
+          image: me-west1-docker.pkg.dev/gcp-etigcp-nprd-12855/wild-tag/server:1f72f6a
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: db-config-map
+          resources:
+            limits:
+              memory: "1G"
+              cpu: "500m"
+            requests:
+              memory: "1G"
+              cpu: "250m"
+{{/*          livenessProbe:*/}}
+{{/*            httpGet:*/}}
+{{/*              path: /actuator/health*/}}
+{{/*              port: 8080*/}}
+{{/*            initialDelaySeconds: 30*/}}
+{{/*            periodSeconds: 10*/}}
+{{/*          readinessProbe:*/}}
+{{/*            httpGet:*/}}
+{{/*              path: /actuator/health*/}}
+{{/*              port: 8080*/}}
+{{/*            initialDelaySeconds: 30*/}}
+{{/*            periodSeconds: 10*/}}
