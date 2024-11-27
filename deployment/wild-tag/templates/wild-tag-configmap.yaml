@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: wild-config
+  labels:
+    app: wild-config
+data:
+  spring.datasource.url: "jdbc:postgresql://wild-postgres:5432/wildtag"
+  spring.datasource.username: "wildtag"
+  spring.datasource.password: "()wqPL453!"

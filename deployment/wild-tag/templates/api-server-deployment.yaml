@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-wild-server
+  labels:
+    app: api-wild-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api-wild-server
+  template:
+    metadata:
+      labels:
+        app: api-wild-server
+    spec:
+      containers:
+        - name: api-wild-server
+          image: "me-west1-docker.pkg.dev/gcp-etigcp-nprd-12855/wild-tag/server:{{ .Values.core.imageTag }}"
+          ports:
+            - containerPort: 8080
+          command:
+          - "java"
+          - "-Xmx512m"
+          - "-jar"
+          - "wild-tag-latest.jar"
+          - "applications.Application"
+          envFrom:
+            - configMapRef:
+                name: wild-config
+          resources:
+            limits:
+              memory: "1G"
+              cpu: "500m"
+            requests:
+              memory: "1G"
+              cpu: "250m"
+{{/*          livenessProbe:*/}}
+{{/*            httpGet:*/}}
+{{/*              path: /actuator/health*/}}
+{{/*              port: 8080*/}}
+{{/*            initialDelaySeconds: 30*/}}
+{{/*            periodSeconds: 10*/}}
+{{/*          readinessProbe:*/}}
+{{/*            httpGet:*/}}
+{{/*              path: /actuator/health*/}}
+{{/*              port: 8080*/}}
+{{/*            initialDelaySeconds: 30*/}}
+{{/*            periodSeconds: 10*/}}
+          imagePullPolicy: IfNotPresent
+
+      imagePullSecrets:
+        - name: regcred
