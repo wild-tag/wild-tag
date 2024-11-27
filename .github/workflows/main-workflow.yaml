@@ -4,6 +4,13 @@ on:
   push:
     branches:
       - deployment
+  workflow_dispatch:
+    inputs:
+      userEnv:
+        description: "Is this a manual run"
+        type: boolean
+        default: true
+
 jobs:
   build-and-push:
     uses: ./.github/workflows/ci.yaml
@@ -14,7 +21,9 @@ jobs:
     uses: ./.github/workflows/cd.yaml
     needs: build-and-push
     with:
+      userEnv: ${{ inputs.userEnv }}
       installation-type: "upgrade"
+
     secrets:
       GCP_SERVICE_ACCOUNT_KEY: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
       PRIVKEY: ${{ secrets.PRIVKEY }}

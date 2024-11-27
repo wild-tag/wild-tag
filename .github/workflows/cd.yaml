@@ -18,6 +18,20 @@ on:
         description: 'tls full chain'
         required: true
 
+  workflow_dispatch:
+    inputs:
+      installation-type:
+        description: 'are we upgrading or starting fresh?'
+        type: choice
+        options:
+          - fresh-install
+          - upgrade
+        default: fresh-install
+      userEnv:
+        description: "Is this for user env"
+        type: boolean
+        default: true
+
 jobs:
   full-deployment:
     runs-on: ubuntu-latest
@@ -30,6 +44,17 @@ jobs:
       RECORD_SUFFIX: ${{ vars.RECORD_SUFFIX }}
 
     steps:
+      - name: Set Namespace name for user
+        if: ${{ inputs.userEnv }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mail=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
+          -H "Accept: application/vnd.github.v3+json" \
+          https://api.github.com/users/${{ github.actor }} \
+          | jq '.email')
+          username="${mail%@*}"
+          echo "WILDTAG_NAMESPACE=$username" >> $GITHUB_ENV
 
       - name: Checkout code
         uses: actions/checkout@v4
