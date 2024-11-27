@@ -22,11 +22,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo $(curl -s -H "Authorization: token $GITHUB_TOKEN" \
+          mail=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
           -H "Accept: application/vnd.github.v3+json" \
           https://api.github.com/users/${{ github.actor }} \
           | jq '.email')
-          echo "what happened?"
+          username="${email%@*}"
+          echo "$username what happened?"
 #    - uses: actions/checkout@v4
 #    - name: Set up JDK 21
 #      uses: actions/setup-java@v4
