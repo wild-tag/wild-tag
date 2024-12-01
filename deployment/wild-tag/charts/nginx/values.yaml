@@ -714,8 +714,9 @@ serverBlock: |-
       index index.html;
   
       set $backend http://api-wild-server.{{.Release.Namespace}}.svc.cluster.local:8080;
+      set $methods 'GET, POST, PUT, DELETE, OPTIONS';
+      add_header Access-Control-Allow-Methods $methods always;
   
-          
       location /health {
         return 200 'OK';
         add_header Content-Type text/plain;
@@ -723,12 +724,27 @@ serverBlock: |-
   
       location /api/ {
 
-      rewrite /api/(.*) /$1 break;
-      proxy_pass $backend;
+        rewrite /api/(.*) /$1 break;
+        if ($request_method = 'OPTIONS') {
+          add_header 'Access-Control-Allow-Origin' '*' always;
+          add_header 'Access-Control-Allow-Headers' 'Authorization, Content-Type, Accept' always;
+          add_header 'Access-Control-Max-Age' 1728000;
+          add_header 'Content-Length' 0;
+          add_header 'Content-Type' 'text/plain charset=UTF-8';
+          return 204;
+        }
+        # Handle actual requests
+        add_header 'Access-Control-Allow-Origin' '*' always;
+        add_header 'Access-Control-Allow-Headers' 'Authorization, Content-Type, Accept' always;
+        add_header Access-Control-Allow-Methods $methods always;
 
-      proxy_set_header Host            $http_host;
-      client_max_body_size 128M;
+        proxy_pass $backend;
+        resolver kube-dns.kube-system.svc.cluster.local valid=10s;
   
+        proxy_set_header Host            $http_host;
+        proxy_set_header Authorization $http_authorization;
+  
+        client_max_body_size 128M; 
       }
       # Optional: Additional security headers
       add_header X-Content-Type-Options nosniff;
