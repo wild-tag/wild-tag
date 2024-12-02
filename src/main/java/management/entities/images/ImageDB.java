@@ -7,6 +7,7 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.sql.Timestamp;
 import java.util.List;
 import management.entities.AbstractEntity;
 import management.entities.users.UserDB;
@@ -28,6 +29,9 @@ public class ImageDB extends AbstractEntity {
   private List<CoordinateDB> coordinates;
   @Column(name = "gcsTaggedPath", columnDefinition = "text")
   private String gcsTaggedPath;
+
+  @Column(name = "start_handled")
+  Timestamp startHandled = Timestamp.valueOf("1970-01-01 00:00:00");
 
   public ImageDB() {
     super();
@@ -97,7 +101,12 @@ public class ImageDB extends AbstractEntity {
     return this;
   }
 
+  public Timestamp getStartHandled() {
+    return startHandled;
+  }
 
-
-
+  public ImageDB setStartHandled(Timestamp startHandled) {
+    this.startHandled = startHandled;
+    return this;
+  }
 }

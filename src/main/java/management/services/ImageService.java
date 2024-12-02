@@ -1,8 +1,11 @@
 package management.services;
 
+import static management.entities.images.ImageStatus.PENDING;
+import static management.entities.images.ImageStatus.TAGGED;
 import static management.entities.images.ImageStatus.VALIDATED;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import java.util.Calendar;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wild_tag.model.CoordinatesApi;
 import com.wild_tag.model.ImageApi;
@@ -13,6 +16,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +32,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -64,6 +69,8 @@ public class ImageService {
 
   @Value("${job.nats.imageProcessingTopic}")
   private String topic;
+  @Value("${imageValidationMinutes:30}")
+  private int imageValidationMinutes;
 
   public ImageService(CloudStorageService cloudStorageService, ImagesRepository imagesRepository,
       UserRepository usersRepository, NATSPublisher natsPublisher) {
@@ -246,5 +253,26 @@ public class ImageService {
   public ImageContent getImageContent(String imageId) {
     ImageDB imageDB = imagesRepository.findById(UUID.fromString(imageId)).orElseThrow();
     return cloudStorageService.getImage(imageDB.getGcsFullPath());
+  }
+  
+  public ImageApi getNextTask(String email) {
+    UserDB user = usersRepository.findByEmail(email).orElseThrow();
+
+    Timestamp startHandled = getTimestampMinutesAgo(imageValidationMinutes);
+    Pageable pageable = PageRequest.of(0, 1); // Fetch only the first result
+
+    List<ImageDB> images = imagesRepository.getNextTask(PENDING, TAGGED, user, startHandled, pageable);
+
+    if (images.isEmpty()) {
+      return new ImageApi();
+    }
+
+    return convertToImageApi(images.get(0));
+  }
+
+  static Timestamp getTimestampMinutesAgo(int minutes) {
+    Calendar calendar = Calendar.getInstance();
+    calendar.add(Calendar.MINUTE, -minutes);
+    return new Timestamp(calendar.getTimeInMillis());
   }
 }
