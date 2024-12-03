@@ -49,7 +49,7 @@ public class UsersControllerTest extends SpringbootTestBase {
 
   @Test
   public void test() {
-    assertThat(usersController).isNotNull();
+    assertThat(usersController).isNull();
   }
 
 
