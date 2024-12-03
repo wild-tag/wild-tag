@@ -7,6 +7,5 @@ metadata:
 data:
   spring.datasource.url: "jdbc:postgresql://wild-postgres:5432/wildtag"
   spring.datasource.username: "wildtag"
-  spring.datasource.password: "()wqPL453!"
   serverUrl: "{{ .Values.global.serverUrl }}"
   job.nats.uri: "nats-wild:4222"

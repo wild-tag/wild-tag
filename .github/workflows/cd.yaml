@@ -22,6 +22,12 @@ on:
       FULL_CHAIN:
         description: 'tls full chain'
         required: true
+      PSQL_POSTGRESQL_PASS:
+        description: 'postgresql user pass'
+        required: true
+      PSQL_WILDTAG_PASS:
+        description: 'wild-tag user pass'
+        required: true
 
 jobs:
   prepare-env-and-deploy:
@@ -85,6 +91,20 @@ jobs:
           --docker-password='${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}'  \
           --namespace=${{ inputs.env-name }}
 
+
+      - name: Create psql secret
+        run: |
+          
+          if kubectl get secret postgresql-secret --namespace=${{ inputs.env-name }} >/dev/null 2>&1; then 
+            kubectl delete secret postgresql-secret --namespace=${{ inputs.env-name }}
+          else
+            echo "secret doesn't exists - creating it"
+          fi
+          
+          kubectl create secret generic postgresql-secret \
+             --from-literal=postgres-password=${{ secrets.PSQL_POSTGRESQL_PASS }} \
+             --from-literal=password="${{ secrets.PSQL_WILDTAG_PASS }}" \
+             --namespace=${{ inputs.env-name }}
 
       - name: Create tls secret
         run: |

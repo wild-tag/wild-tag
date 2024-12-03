@@ -29,6 +29,12 @@ spec:
           envFrom:
             - configMapRef:
                 name: wild-config
+          env:
+            - name: spring.datasource.password
+              valueFrom:
+                secretKeyRef:
+                  name: postgresql-secret
+                  key: password
           resources:
             requests:
               memory: "512Mi"

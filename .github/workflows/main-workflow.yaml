@@ -42,3 +42,5 @@ jobs:
       GCP_SERVICE_ACCOUNT_KEY: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
       PRIVKEY: ${{ secrets.PRIVKEY }}
       FULL_CHAIN: ${{ secrets.FULL_CHAIN }}
+      PSQL_POSTGRESQL_PASS: ${{ secrets.PSQL_POSTGRESQL_PASS }}
+      PSQL_WILDTAG_PASS: ${{ secrets.PSQL_WILDTAG_PASS }}
